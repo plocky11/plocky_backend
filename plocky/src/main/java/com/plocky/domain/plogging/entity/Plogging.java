@@ -17,7 +17,7 @@ import java.time.LocalDateTime;
 public class Plogging extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name="ploggin_id")
+    @Column(name="plogging_id")
     private Long id;
     private float distance;
     private int amount;
