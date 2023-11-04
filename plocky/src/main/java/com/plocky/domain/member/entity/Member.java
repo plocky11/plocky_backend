@@ -33,5 +33,4 @@ public class Member {
 
 //    @OneToOne
 //    private Pet pet;
-
 }
