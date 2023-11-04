@@ -11,6 +11,7 @@ import lombok.*;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Transactional
 public class TrashCategory {
+    //쓰레기통
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="trash_category_id")
