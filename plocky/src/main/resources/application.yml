@@ -1,1 +1,52 @@
+spring:
+  h2:
+    console:
+      enabled: true
+      path: /h2-console
 
+  data:
+    web:
+      pageable:
+        one-indexed-parameters: true
+        default-page-size: 5
+
+  datasource:
+    url: jdbc:h2:mem:plocky
+    username: sa
+    password:
+    driver-class-name: org.h2.Driver
+
+  jpa:
+    hibernate:
+      ddl-auto: create
+    properties:
+      hibernate:
+        #        show_sql: true
+        format_sql: true
+
+logging:
+  level:
+    #        root: debug
+    org.springframework.security: debug
+    org.hibernate.SQL: debug
+    org.hibernate.type: trace
+
+
+server:
+  error:
+    include-exception: true
+    include-message: always
+
+kakao:
+  client:
+    id: b2ab780455c39f6ef142de63098fdd83 #REST API key
+    pw: c7785e387cafe865ef22285d5a5c082d #Admin key
+    redirect_uri: http://localhost:8080/oauth/kakao/login/redirect #Redirect Uri
+  uri:
+    authorization_uri: https://kauth.kakao.com/oauth/authorize #Authorization Uri
+    token_uri: https://kauth.kakao.com/oauth/token #Token Uri
+    user-info-uri: https://kapi.kakao.com/v2/user/me #User Info Uri
+
+
+
+NO_CHECK_URL: "/login"
