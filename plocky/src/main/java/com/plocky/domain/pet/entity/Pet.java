@@ -26,5 +26,5 @@ public class Pet extends BaseTimeEntity {
     private int level;
     @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
-    private Long memberId;
+    private Member member;
 }
