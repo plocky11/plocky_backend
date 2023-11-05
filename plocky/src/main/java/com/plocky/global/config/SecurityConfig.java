@@ -10,6 +10,7 @@ import jakarta.servlet.http.HttpServletResponse;
 
 import lombok.AllArgsConstructor;
 
+import lombok.RequiredArgsConstructor;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.SecurityConfigurerAdapter;
@@ -22,7 +23,8 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 
 @Configuration
 @EnableWebSecurity
-@AllArgsConstructor
+//@AllArgsConstructor
+@RequiredArgsConstructor
 public class SecurityConfig extends SecurityConfigurerAdapter {
     private final JwtService jwtService;
     private final String NO_CHECK_URL = "/login";

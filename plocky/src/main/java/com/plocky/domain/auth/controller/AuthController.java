@@ -15,7 +15,6 @@ public class AuthController {
 
     @GetMapping("oauth/kakao/login/uri")
     public String kakaoLogin(){
-        log.info("Kaccckkdjkaldkja");
         return authService.login();
     }
 
