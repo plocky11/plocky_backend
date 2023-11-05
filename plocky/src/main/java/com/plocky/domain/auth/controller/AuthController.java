@@ -19,8 +19,9 @@ public class AuthController {
     }
 
     @PostMapping("oauth/kakao/login/access")
-    public void kakaoAccess(@RequestBody String request){
-        authService.access(request);
+    public void kakaoAccess(@RequestParam(value = "code", required = true) String kakaoCode){
+        log.info("code = "+kakaoCode);
+        authService.access(kakaoCode);
     }
 
     // access token 발급 테스트용 임시 컨트롤러

@@ -1,17 +1,14 @@
 package com.plocky.domain.auth.service;
 
-import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpEntity;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpMethod;
 import org.springframework.http.ResponseEntity;
-import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 import org.springframework.web.client.RestTemplate;
 
@@ -39,12 +36,12 @@ public class AuthService {
     }
 
     // 카카오 서버에 accessToken 요청
-    private ResponseEntity<AccessTokenResponse> requestAccessToken(String auth_uri) {
+    private ResponseEntity<TokenResponse> requestAccessToken(String auth_uri) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         String requestBody = "{\"key\": \"value\"}";
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-        return restTemplate.exchange(auth_uri, HttpMethod.POST, requestEntity, AccessTokenResponse.class);
+        return restTemplate.exchange(auth_uri, HttpMethod.POST, requestEntity, TokenResponse.class);
     }
 
     // 카카오 서버에 user 정보 요청
@@ -57,23 +54,18 @@ public class AuthService {
     }
 
     // 인가코드 받아서 accessToken 발급
-    public void access(String request) {
-        String[] parts = request.split("code=");
-        if (parts.length > 1) {
-            String code = parts[1];
-            String auth_uri = TOKEN_URI + "?grant_type=authorization_code&client_id=" + REST_API_KEY +
-                    "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
-            // access token 발급
-            ResponseEntity<AccessTokenResponse> responseAccessEntity = requestAccessToken(auth_uri);
-            AccessTokenResponse responseAccessBody = responseAccessEntity.getBody();
-            log.info(responseAccessBody.getAccessToken());
+    public void access(String code) {
+        log.info("code" + code);
+        String auth_uri = TOKEN_URI + "?grant_type=authorization_code&client_id=" + REST_API_KEY +
+                "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
+        // access token 발급
+        ResponseEntity<TokenResponse> responseAccessEntity = requestAccessToken(auth_uri);
+        TokenResponse responseAccessBody = responseAccessEntity.getBody();
+        log.info(responseAccessBody.getAccessToken());
 
-            // user 정보 조회
-            ResponseEntity<String> responseUserEntity = requestUserInfo(responseAccessBody.getAccessToken());
-            String responseUserBody = responseUserEntity.getBody();
-            log.info(responseUserBody);
-        }
-
-
+        // user 정보 조회
+        ResponseEntity<String> responseUserEntity = requestUserInfo(responseAccessBody.getAccessToken());
+        String responseUserBody = responseUserEntity.getBody();
+        log.info(responseUserBody);
     }
 }
