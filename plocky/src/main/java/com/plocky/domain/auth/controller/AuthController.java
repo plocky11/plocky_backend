@@ -3,16 +3,19 @@ package com.plocky.domain.auth.controller;
 import com.plocky.domain.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
 import lombok.RequiredArgsConstructor;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
+@Slf4j
 public class AuthController {
     private final AuthService authService;
 
     @GetMapping("oauth/kakao/login/uri")
     public String kakaoLogin(){
+        log.info("Kaccckkdjkaldkja");
         return authService.login();
     }
 

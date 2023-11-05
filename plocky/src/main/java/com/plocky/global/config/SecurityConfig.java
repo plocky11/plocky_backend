@@ -36,16 +36,6 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin().disable();
         http.httpBasic().disable();
-        http.logout()
-                .logoutUrl("/logout")
-                .deleteCookies("JSESSIONID")
-                .invalidateHttpSession(true)
-                .clearAuthentication(true)
-                .logoutSuccessHandler((request, response, authentication) -> {
-                    response.setStatus(HttpServletResponse.SC_OK);
-                })
-                .permitAll();
-
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
@@ -57,11 +47,11 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
         return jwtRequestFilter;
 
     }
-
-    @Bean
-    public JwtExceptionFilter jwtExceptionFilter() {
-        JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
-        return jwtExceptionFilter;
-    }
+//
+//    @Bean
+//    public JwtExceptionFilter jwtExceptionFilter() {
+//        JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
+//        return jwtExceptionFilter;
+//    }
 }
 
