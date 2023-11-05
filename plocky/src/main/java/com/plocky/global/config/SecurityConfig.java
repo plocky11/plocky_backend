@@ -27,6 +27,7 @@ import org.springframework.security.web.authentication.logout.SecurityContextLog
 @RequiredArgsConstructor
 public class SecurityConfig extends SecurityConfigurerAdapter {
     private final JwtService jwtService;
+    private final MemberRepository memberRepository;
     private final String NO_CHECK_URL = "/login";
 
 
@@ -48,7 +49,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
 
     @Bean
     public JwtRequestFilter jwtRequestFilter() {
-        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtService);
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtService, memberRepository);
         return jwtRequestFilter;
 
     }
