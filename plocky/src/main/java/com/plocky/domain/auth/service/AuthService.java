@@ -71,7 +71,7 @@ public class AuthService {
         KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(responseAccessBody.getAccessToken());
         log.info("kakaoInfoDto = "+kakaoInfoDto);
 
-        if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId().toString()).orElse(null) == null){
+        if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId()).orElse(null) == null){
             // return 회원가입
         }
         // return 로그인
