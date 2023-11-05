@@ -48,7 +48,7 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
 
     @Bean
     public JwtRequestFilter jwtRequestFilter() {
-        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter();
+        JwtRequestFilter jwtRequestFilter = new JwtRequestFilter(jwtService);
         return jwtRequestFilter;
 
     }
