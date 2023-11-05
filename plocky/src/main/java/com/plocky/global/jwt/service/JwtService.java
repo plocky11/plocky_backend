@@ -2,6 +2,7 @@ package com.plocky.global.jwt.service;
 
 import com.plocky.domain.auth.service.AuthService;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 
@@ -23,8 +24,13 @@ public class JwtService {
     }
 
     public Optional<String> extractKakaoId(String accessToken) {
-//        String kakaoId = authService.checkIfAccessTokenIsValid(accessToken).getId();
-//        return Optional.ofNullable(kakaoId);
-        return Optional.ofNullable("");
+        String kakaoId = authService.checkIfAccessTokenIsValid(accessToken).getKakaoId();
+        return Optional.ofNullable(kakaoId);
     }
+
+    public void setAccessTokenHeader(HttpServletResponse response, String accessToken) {
+        response.setHeader("Authorization", "Bearer " + accessToken);
+    }
+
+
 }
