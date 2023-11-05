@@ -20,7 +20,6 @@ public class AuthController {
 
     @PostMapping("oauth/kakao/login/access")
     public void kakaoAccess(@RequestParam(value = "code", required = true) String kakaoCode){
-        log.info("code = "+kakaoCode);
         authService.access(kakaoCode);
     }
 

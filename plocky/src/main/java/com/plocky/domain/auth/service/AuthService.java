@@ -1,5 +1,7 @@
 package com.plocky.domain.auth.service;
 
+import com.plocky.domain.auth.dto.KakaoInfoDto;
+import com.plocky.domain.member.repository.MemberRepository;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -19,6 +21,7 @@ import org.springframework.web.client.RestTemplate;
 @Slf4j
 public class AuthService {
     private final RestTemplate restTemplate;
+    private final MemberRepository memberRepository;
     @Value("${kakao.client.id}")
     private String REST_API_KEY;
     @Value("${kakao.client.redirect_uri}")
@@ -29,6 +32,8 @@ public class AuthService {
     private String TOKEN_URI;
     @Value("${kakao.uri.user-info-uri}")
     private String USER_URI;
+    @Value("${kakao.uri.token-info-uri}")
+    private String TOKEN_INFO_URI;
 
     // 로그인 요청 시 카카오 로그인 주소 반환
     public String login() {
@@ -36,36 +41,41 @@ public class AuthService {
     }
 
     // 카카오 서버에 accessToken 요청
-    private ResponseEntity<TokenResponse> requestAccessToken(String auth_uri) {
+    private TokenResponse requestAccessToken(String auth_uri) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Content-Type", "application/json");
         String requestBody = "{\"key\": \"value\"}";
         HttpEntity<String> requestEntity = new HttpEntity<>(requestBody, headers);
-        return restTemplate.exchange(auth_uri, HttpMethod.POST, requestEntity, TokenResponse.class);
+        ResponseEntity<TokenResponse> responseAccessEntity = restTemplate.exchange(auth_uri, HttpMethod.POST, requestEntity, TokenResponse.class);
+        return responseAccessEntity.getBody();
     }
 
-    // 카카오 서버에 user 정보 요청
-    private ResponseEntity<String> requestUserInfo(String token) {
+    // access token 이용해서 KakaoInfoDto 조회 후 반환
+    public KakaoInfoDto checkIfAccessTokenIsValid(String accessToken){
         HttpHeaders headers = new HttpHeaders();
-        headers.set("Content-Type", "application/x-www-form-urlencoded;charset=utf-8");
-        headers.set("Authorization", "Bearer "+token);
+        headers.set("Authorization", "Bearer "+accessToken);
         HttpEntity<String> requestEntity = new HttpEntity<>(null, headers);
-        return restTemplate.exchange(USER_URI, HttpMethod.GET, requestEntity, String.class);
+        ResponseEntity<KakaoInfoDto> kakaoInfoDtoResponseEntity = restTemplate.exchange(TOKEN_INFO_URI, HttpMethod.GET, requestEntity, KakaoInfoDto.class);
+        return kakaoInfoDtoResponseEntity.getBody();
     }
 
     // 인가코드 받아서 accessToken 발급
     public void access(String code) {
-        log.info("code" + code);
         String auth_uri = TOKEN_URI + "?grant_type=authorization_code&client_id=" + REST_API_KEY +
                 "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
         // access token 발급
-        ResponseEntity<TokenResponse> responseAccessEntity = requestAccessToken(auth_uri);
-        TokenResponse responseAccessBody = responseAccessEntity.getBody();
+        TokenResponse responseAccessBody = requestAccessToken(auth_uri);
         log.info(responseAccessBody.getAccessToken());
 
-        // user 정보 조회
-        ResponseEntity<String> responseUserEntity = requestUserInfo(responseAccessBody.getAccessToken());
-        String responseUserBody = responseUserEntity.getBody();
-        log.info(responseUserBody);
+        // accessToken으로 카카오아이디 및 토큰 정보 조회
+        KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(responseAccessBody.getAccessToken());
+        log.info("kakaoInfoDto = "+kakaoInfoDto);
+
+        if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId().toString()).orElse(null) == null){
+            // return 회원가입
+        }
+        // return 로그인
     }
+
+
 }
