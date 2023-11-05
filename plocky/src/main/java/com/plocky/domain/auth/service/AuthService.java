@@ -1,7 +1,9 @@
 package com.plocky.domain.auth.service;
 
 import com.plocky.domain.auth.dto.KakaoInfoDto;
+import com.plocky.domain.auth.dto.TokenResponse;
 import com.plocky.domain.member.repository.MemberRepository;
+import com.plocky.domain.member.service.MemberService;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 
@@ -22,6 +24,7 @@ import org.springframework.web.client.RestTemplate;
 public class AuthService {
     private final RestTemplate restTemplate;
     private final MemberRepository memberRepository;
+    private final MemberService memberService;
     @Value("${kakao.client.id}")
     private String REST_API_KEY;
     @Value("${kakao.client.redirect_uri}")
@@ -64,18 +67,18 @@ public class AuthService {
         String auth_uri = TOKEN_URI + "?grant_type=authorization_code&client_id=" + REST_API_KEY +
                 "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
         // access token 발급
-        TokenResponse responseAccessBody = requestAccessToken(auth_uri);
-        log.info(responseAccessBody.getAccessToken());
+        TokenResponse token = requestAccessToken(auth_uri);
+        log.info(token.getAccessToken());
 
         // accessToken으로 카카오아이디 및 토큰 정보 조회
-        KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(responseAccessBody.getAccessToken());
+        KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(token.getAccessToken());
         log.info("kakaoInfoDto = "+kakaoInfoDto);
 
-        if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId()).orElse(null) == null){
-            // return 회원가입
+        if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId().toString()).orElse(null) == null){
+            // 회원가입
+            memberService.signup(kakaoInfoDto, token);
+        } else {
+            // return 로그인
         }
-        // return 로그인
     }
-
-
 }
