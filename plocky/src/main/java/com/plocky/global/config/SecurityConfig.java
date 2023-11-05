@@ -1,6 +1,7 @@
 package com.plocky.global.config;
 
 import com.plocky.domain.member.repository.MemberRepository;
+import com.plocky.global.jwt.CustomAuthenticationEntryPoint;
 import com.plocky.global.jwt.filter.JwtExceptionFilter;
 import com.plocky.global.jwt.filter.JwtRequestFilter;
 import com.plocky.global.jwt.service.JwtService;
@@ -36,7 +37,9 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
         http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS);
         http.formLogin().disable();
         http.httpBasic().disable();
+        http.exceptionHandling().authenticationEntryPoint(new CustomAuthenticationEntryPoint());
         http.addFilterBefore(jwtRequestFilter(), UsernamePasswordAuthenticationFilter.class);
+        http.addFilterBefore(jwtExceptionFilter(), JwtRequestFilter.class);
 
         return http.build();
     }
@@ -47,11 +50,11 @@ public class SecurityConfig extends SecurityConfigurerAdapter {
         return jwtRequestFilter;
 
     }
-//
-//    @Bean
-//    public JwtExceptionFilter jwtExceptionFilter() {
-//        JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
-//        return jwtExceptionFilter;
-//    }
+
+    @Bean
+    public JwtExceptionFilter jwtExceptionFilter() {
+        JwtExceptionFilter jwtExceptionFilter = new JwtExceptionFilter();
+        return jwtExceptionFilter;
+    }
 }
 
