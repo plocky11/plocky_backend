@@ -72,13 +72,10 @@ public class AuthService {
 
         // accessToken으로 카카오아이디 및 토큰 정보 조회
         KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(token.getAccessToken());
-        log.info("kakaoInfoDto = "+kakaoInfoDto);
+        log.info("kakaoInfoDto = " + kakaoInfoDto);
 
         if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId().toString()).orElse(null) == null){
-            // 회원가입
             memberService.signup(kakaoInfoDto, token);
-        } else {
-            // return 로그인
         }
     }
 }
