@@ -79,9 +79,6 @@ public class AuthService {
             memberService.signup(kakaoInfoDto, token);
         } else {
             // return 로그인
-
         }
     }
-
-
 }

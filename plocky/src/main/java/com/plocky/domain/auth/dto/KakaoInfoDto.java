@@ -9,7 +9,7 @@ import lombok.*;
 @AllArgsConstructor @NoArgsConstructor
 public class KakaoInfoDto {
     @JsonProperty("id")
-    private Long kakaoId;
+    private String kakaoId;
     @JsonProperty("expires_in")
     private int expiresIn;
     @JsonProperty("app_id")
