@@ -1,5 +1,6 @@
 package com.plocky.domain.member.entity;
 
+import com.plocky.domain.pet.entity.Pet;
 import com.plocky.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 
@@ -41,6 +42,6 @@ public class Member extends BaseTimeEntity {
 //    @
 //    List<Plogging> ploggingList = new ArrayList<>();
 
-//    @OneToOne
-//    private Pet pet;
+    @OneToOne(mappedBy = "member")
+    private Pet pet;
 }
