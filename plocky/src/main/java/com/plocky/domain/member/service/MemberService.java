@@ -2,10 +2,13 @@ package com.plocky.domain.member.service;
 
 import com.plocky.domain.auth.dto.KakaoInfoDto;
 import com.plocky.domain.auth.dto.TokenResponse;
+import com.plocky.domain.member.dto.RankingMeDto;
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
 import com.plocky.domain.pet.entity.Pet;
+import com.plocky.domain.pet.repository.PetRepository;
 import com.plocky.domain.pet.service.PetService;
+import jakarta.servlet.http.HttpServletRequest;
 import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -13,6 +16,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.Random;
 
 @Service
@@ -21,6 +25,7 @@ import java.util.Random;
 @Slf4j
 public class MemberService {
     private final MemberRepository memberRepository;
+    private final PetRepository petRepository;
     private final PetService petService;
     private final Random random;
     @Value("${plocky.nickname.first}")
@@ -60,5 +65,22 @@ public class MemberService {
         memberRepository.save(member);
         // 펫 생성
         petService.createPet(member);
+    }
+
+    // 내 순위 정보 조회
+    public RankingMeDto getRankingMe(String kakaoId) {
+        Member member = memberRepository.findByKakaoId(kakaoId)
+                .orElseThrow(() -> new NullPointerException("Member not found for kakaoId: " + kakaoId));
+        int ranking = memberRepository.calculateRanking(member.getTotalDistance(), member.getNickname());
+        Pet pet = petRepository.findByMember(member)
+                .orElseThrow(() -> new NullPointerException("Pet not found for member: " + member));
+
+        return RankingMeDto.builder()
+                .memberId(member.getId())
+                .nickname(member.getNickname())
+                .totalDistance(member.getTotalDistance())
+                .petLevel(pet.getLevel())
+                .ranking(ranking)
+                .build();
     }
 }
