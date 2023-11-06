@@ -37,17 +37,16 @@ public class AuthController {
 
     @GetMapping("/hello")
     public String hello(HttpServletRequest request, HttpServletResponse response) {
-        if (SecurityUtil.getLoginedUserName().equals(jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()))) {
-            log.info("SUCCESSFULLY AUTHORIZED");
+        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
+
+        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
+            //Authorized
             return "Hello";
         }
         else {
-            log.info("UNAUTHORIZED 403");
+            //Unauthorized
             response.setStatus(401);
-            log.info("SecurityUtil: " + SecurityUtil.getLoginedUserName());
-            log.info("ExtractedAccessToken: " + jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow());
-
-            return "403";
+            return "UNAUTHORIZED";
         }
     }
 }
