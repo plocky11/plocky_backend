@@ -1,10 +1,15 @@
 package com.plocky.domain.auth.controller;
 
 import com.plocky.domain.auth.service.AuthService;
+import com.plocky.global.jwt.service.JwtService;
+import com.plocky.global.utils.SecurityUtil;
 import jakarta.servlet.http.HttpServletRequest;
+import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.context.SecurityContext;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -12,6 +17,7 @@ import org.springframework.web.bind.annotation.*;
 @Slf4j
 public class AuthController {
     private final AuthService authService;
+    private final JwtService jwtService;
 
     @GetMapping("oauth/kakao/login/uri")
     public String kakaoLogin(){
@@ -27,5 +33,21 @@ public class AuthController {
     @GetMapping("oauth/kakao/login/redirect")
     public String redirectView(){
         return "redirect";
+    }
+
+    @GetMapping("/hello")
+    public String hello(HttpServletRequest request, HttpServletResponse response) {
+        if (SecurityUtil.getLoginedUserName().equals(jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()))) {
+            log.info("SUCCESSFULLY AUTHORIZED");
+            return "Hello";
+        }
+        else {
+            log.info("UNAUTHORIZED 403");
+            response.setStatus(401);
+            log.info("SecurityUtil: " + SecurityUtil.getLoginedUserName());
+            log.info("ExtractedAccessToken: " + jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow());
+
+            return "403";
+        }
     }
 }
