@@ -2,6 +2,7 @@ package com.plocky.domain.member.service;
 
 import com.plocky.domain.auth.dto.KakaoInfoDto;
 import com.plocky.domain.auth.dto.TokenResponse;
+import com.plocky.domain.member.dto.RankingListDto;
 import com.plocky.domain.member.dto.RankingMeDto;
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
@@ -18,6 +19,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
+import java.util.stream.Collectors;
 
 @Service
 @Transactional
@@ -68,6 +70,7 @@ public class MemberService {
     }
 
     // 내 순위 정보 조회
+    // 내 순위 or 상위 세개의 정보를 알기 위해서 모든 데이터를 불러오는 것이 타당한가...? -> Redis Sorted Set 이용하여 구현 가능하다고 함
     public RankingMeDto getRankingMe(String kakaoId) {
         Member member = memberRepository.findByKakaoId(kakaoId)
                 .orElseThrow(() -> new NullPointerException("Member not found for kakaoId: " + kakaoId));
@@ -82,5 +85,22 @@ public class MemberService {
                 .petLevel(pet.getLevel())
                 .ranking(ranking)
                 .build();
+    }
+
+    // 랭킹 리스트, 단 회원정보가 세개 미만일 때는 존재하는 데이터만 반환
+    public List<RankingListDto> getRankingList() {
+        List<RankingListDto> members = memberRepository.findByRanking().stream()
+                .limit(3)
+                .map(member -> {
+                    return RankingListDto
+                            .builder()
+                            .memberId(member.getId())
+                            .petLevel(member.getPet().getLevel())
+                            .nickname(member.getNickname())
+                            .totalDistance(member.getTotalDistance())
+                            .build();
+                })
+                .collect(Collectors.toList());
+        return members;
     }
 }
