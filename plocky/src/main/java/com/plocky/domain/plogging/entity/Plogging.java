@@ -6,6 +6,7 @@ import com.plocky.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 import java.time.LocalDateTime;
 
@@ -14,13 +15,14 @@ import java.time.LocalDateTime;
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Transactional
+@EntityListeners(AuditingEntityListener.class)
 public class Plogging extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="plogging_id")
     private Long id;
     private float distance;
-    private int amount;
+    private int quantity;
     private String route;
     private String startedWhere;
     private LocalDateTime startedWhen;

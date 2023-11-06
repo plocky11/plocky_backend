@@ -4,6 +4,7 @@ import com.plocky.global.entity.BaseTimeEntity;
 import jakarta.persistence.*;
 import jakarta.transaction.Transactional;
 import lombok.*;
+import org.springframework.data.jpa.domain.support.AuditingEntityListener;
 
 @Entity
 @Getter
@@ -11,6 +12,7 @@ import lombok.*;
 @AllArgsConstructor
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @Transactional
+@EntityListeners(AuditingEntityListener.class)
 public class Trashcan extends BaseTimeEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)

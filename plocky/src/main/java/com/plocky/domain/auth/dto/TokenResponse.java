@@ -1,4 +1,4 @@
-package com.plocky.domain.auth.service;
+package com.plocky.domain.auth.dto;
 
 import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Getter;
