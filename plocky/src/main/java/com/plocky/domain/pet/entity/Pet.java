@@ -26,7 +26,7 @@ public class Pet extends BaseTimeEntity {
     @Enumerated(EnumType.STRING)
     private PetKind petKind;
     private int level;
-    @ManyToOne(fetch = FetchType.LAZY)
+    @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
 }

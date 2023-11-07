@@ -68,7 +68,7 @@ public class AuthService {
                 "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
         // access token 발급
         TokenResponse token = requestAccessToken(auth_uri);
-        log.info(token.getAccessToken());
+        log.info("token = "+token.getAccessToken());
 
         // accessToken으로 카카오아이디 및 토큰 정보 조회
         KakaoInfoDto kakaoInfoDto = checkIfAccessTokenIsValid(token.getAccessToken());
