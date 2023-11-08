@@ -26,26 +26,29 @@ public class MemberController {
     private final JwtService jwtService;
 
     @GetMapping("members/ranking/me")
-    public ResponseEntity<RankingMeDto> getRankingMe(HttpServletRequest request, HttpServletResponse response) {
+    public RankingMeDto getRankingMe(HttpServletRequest request, HttpServletResponse response) {
         String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
 
         if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
             RankingMeDto rankingMeDto = memberService.getRankingMe(extractedKakaoId);
-            return ResponseEntity.status(HttpStatus.OK).body(rankingMeDto);
+            return rankingMeDto;
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.setStatus(401);
+            return null;
         }
     }
 
     @GetMapping("members/ranking")
-    public ResponseEntity<List<RankingListDto>> getRankingList(HttpServletRequest request, HttpServletResponse response) {
+    public List<RankingListDto> getRankingList(HttpServletRequest request, HttpServletResponse response) {
         String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
 
         if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
             List<RankingListDto> rankingList = memberService.getRankingList();
-            return ResponseEntity.status(HttpStatus.OK).body(rankingList);
+            response.setStatus(200);
+            return rankingList;
         } else {
-            return ResponseEntity.status(HttpStatus.UNAUTHORIZED).build();
+            response.setStatus(401);
+            return null;
         }
     }
 }
