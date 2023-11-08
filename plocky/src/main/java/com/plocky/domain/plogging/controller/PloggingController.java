@@ -26,7 +26,7 @@ public class PloggingController {
 
         if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
             String ploggingId = ploggingService.create(form, extractedKakaoId);
-            response.setStatus(200);
+            response.setStatus(201);
             return ploggingId;
         } else {
             response.setStatus(401);
