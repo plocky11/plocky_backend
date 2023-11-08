@@ -2,6 +2,7 @@ package com.plocky.domain.plogging.service;
 
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
+import com.plocky.domain.pet.entity.Pet;
 import com.plocky.domain.plogging.dto.CreatePloggingDto;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapDocument;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapResponse;
@@ -95,15 +96,12 @@ public class PloggingService {
         Member member = memberRepository.findByKakaoId(kakaoId).orElseThrow(
                 () -> new NullPointerException("Member not found for kakaoId: " + kakaoId));
 
-        // 위도, 경도로 구 주소 구하기
         Location startedLocation = createLocation(form.getStartedLatitude(), form.getStartedLongitude());
         Location endedLocation = createLocation(form.getEndedLatitude(), form.getEndedLongitude());
 
-        // trashCategory 생성하기
         TrashCategory trashCategory = createTrashCategory(form);
         int totalQuantity = trashCategory.getTotalQuantity();
 
-        //plogging 생성 및 저장하기
         Plogging newPlogging = Plogging.builder()
                 .distance(form.getDistance())
                 .quantity(totalQuantity)
@@ -116,11 +114,12 @@ public class PloggingService {
                 .build();
         ploggingRepository.save(newPlogging);
 
-        // member에 플로깅 정보 추가
         member.addTotalDistance(newPlogging.getDistance());
         member.addTotalQuantity(newPlogging.getQuantity());
+        member.getPet().levelUp();
 
-        // dto에 정보 담기
         return newPlogging.getId().toString();
     }
+
+
 }

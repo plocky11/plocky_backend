@@ -29,4 +29,15 @@ public class Pet extends BaseTimeEntity {
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "member_id")
     private Member member;
+
+    public void levelUp() {
+        int[] distances = {1, 5, 10, 30, 50};
+        int newLevel = 0;
+        for (int i = 0; i < distances.length; i++) {
+            if (member.getTotalDistance() > distances[i]) {
+                newLevel = i + 1;
+            }
+        }
+        this.level = newLevel;
+    }
 }
