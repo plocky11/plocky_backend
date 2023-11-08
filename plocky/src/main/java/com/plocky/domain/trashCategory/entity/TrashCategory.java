@@ -23,4 +23,9 @@ public class TrashCategory {
     private int foamQuantity;
     private int etcQuantity;
     private int cigarQuantity;
+
+    public int getTotalQuantity() {
+        return paperQuantity + plaQuantity + glassQuantity
+                + canQuantity + foamQuantity + etcQuantity + cigarQuantity;
+    }
 }

@@ -34,14 +34,12 @@ public class Member extends BaseTimeEntity {
     private String nickname;
     private float totalDistance;
     private Integer totalQuantity;
+    @OneToOne(mappedBy = "member")
+    private Pet pet;
 
     public void updateNickname(String nickname){
         this.nickname = nickname;
     }
-
-//    @
-//    List<Plogging> ploggingList = new ArrayList<>();
-
-    @OneToOne(mappedBy = "member")
-    private Pet pet;
+    public void addTotalQuantity(int quantity){ this.totalQuantity += quantity; }
+    public void addTotalDistance(float distance) { this.totalDistance += distance; }
 }

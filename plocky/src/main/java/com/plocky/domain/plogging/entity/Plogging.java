@@ -13,6 +13,7 @@ import java.time.LocalDateTime;
 
 @Entity
 @Getter
+@Builder
 @NoArgsConstructor(access = AccessLevel.PUBLIC)
 @AllArgsConstructor
 @Transactional
@@ -24,8 +25,6 @@ public class Plogging extends BaseTimeEntity {
     private Long id;
     private float distance;
     private int quantity;
-    private String route;
-
     @OneToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "started_location_id")
     private Location startedLocation;
