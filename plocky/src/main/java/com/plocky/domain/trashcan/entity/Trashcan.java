@@ -1,5 +1,6 @@
 package com.plocky.domain.trashcan.entity;
 
+import com.plocky.domain.member.entity.Member;
 import com.plocky.global.entity.BaseTimeEntity;
 import com.plocky.global.entity.Location;
 import jakarta.persistence.*;
@@ -19,8 +20,9 @@ public class Trashcan extends BaseTimeEntity {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name="trashcan_id")
     private Long id;
-
-    @OneToOne(fetch = FetchType.LAZY)
-    @JoinColumn(name="location_id")
-    private Location location;
+    private float latitude;
+    private float longitude;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name="member_id")
+    private Member member;
 }
