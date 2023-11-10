@@ -2,7 +2,6 @@ package com.plocky.domain.plogging.service;
 
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
-import com.plocky.domain.pet.entity.Pet;
 import com.plocky.domain.plogging.dto.CreatePloggingDto;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapDocument;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapResponse;
@@ -58,8 +57,11 @@ public class PloggingService {
             StringBuilder responseAddress = new StringBuilder();
             if (address.getRegion_1depth_name() != null) {
                 responseAddress.append(address.getRegion_1depth_name());
-                if (address.getRegion_2depth_name() != null) {
-                    responseAddress.append(" " + address.getRegion_2depth_name()); }
+                if (address.getRegion_2depth_name() != null && address.getRegion_2depth_name() != "") {
+                    responseAddress.append(" " + address.getRegion_2depth_name());
+                    if (address.getRegion_3depth_name() != null && address.getRegion_3depth_name() != "") { responseAddress.append(" " + address.getRegion_3depth_name()); }
+                    if (address.getRoad_name() != null){ responseAddress.append(" " + address.getRoad_name()); }
+                }
             }
             return responseAddress.toString();
         }
