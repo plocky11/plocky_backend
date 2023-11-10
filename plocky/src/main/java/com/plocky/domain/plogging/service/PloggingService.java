@@ -65,7 +65,7 @@ public class PloggingService {
             }
             return responseAddress.toString();
         }
-        return "경기도 성남시 분당구";
+        return "경기 성남시 분당구";
     }
 
     // 위치 정보 구하기
