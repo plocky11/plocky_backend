@@ -7,5 +7,4 @@ import lombok.Getter;
 @Getter
 public class KakaoMapDocument {
     private KakaoMapRoadAddress road_address;
-    private KakaoMapAddress address;
 }

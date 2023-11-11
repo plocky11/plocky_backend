@@ -1,6 +1,7 @@
 package com.plocky.domain.auth.service;
 
 import com.plocky.domain.auth.dto.KakaoInfoDto;
+import com.plocky.domain.auth.dto.TokenDto;
 import com.plocky.domain.auth.dto.TokenResponse;
 import com.plocky.domain.member.repository.MemberRepository;
 import com.plocky.domain.member.service.MemberService;
@@ -63,7 +64,7 @@ public class AuthService {
     }
 
     // 인가코드 받아서 accessToken 발급
-    public void access(String code) {
+    public TokenDto access(String code) {
         String auth_uri = TOKEN_URI + "?grant_type=authorization_code&client_id=" + REST_API_KEY +
                 "&redirect_uri=" + REDIRECT_URI + "&code=" + code;
         // access token 발급
@@ -77,5 +78,6 @@ public class AuthService {
         if (memberRepository.findByKakaoId(kakaoInfoDto.getKakaoId().toString()).orElse(null) == null){
             memberService.signup(kakaoInfoDto, token);
         }
+        return TokenDto.builder().token(token.getAccessToken()).build();
     }
 }

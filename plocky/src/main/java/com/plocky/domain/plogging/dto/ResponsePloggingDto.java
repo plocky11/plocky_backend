@@ -12,11 +12,9 @@ import java.time.LocalDateTime;
 public class ResponsePloggingDto {
     private Long ploggingId;
     private float distance;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime startedAt;
-    @JsonFormat(shape = JsonFormat.Shape.STRING, pattern = "yyyy-MM-dd'T'HH:mm:ss", timezone = "Asia/Seoul")
-    private LocalDateTime endedAt;
-    private int totalTime;
+    private int totalHour;
+    private int totalMinute;
+    private int totalSecond;
     private String startedWhere;
     private String endedWhere;
     private TrashDto trash;

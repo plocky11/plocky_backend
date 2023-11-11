@@ -2,8 +2,9 @@ package com.plocky.domain.plogging.service;
 
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
-import com.plocky.domain.pet.entity.Pet;
 import com.plocky.domain.plogging.dto.CreatePloggingDto;
+import com.plocky.domain.plogging.dto.ResponsePloggingDto;
+import com.plocky.domain.plogging.dto.TrashDto;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapDocument;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapResponse;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapRoadAddress;
@@ -58,12 +59,15 @@ public class PloggingService {
             StringBuilder responseAddress = new StringBuilder();
             if (address.getRegion_1depth_name() != null) {
                 responseAddress.append(address.getRegion_1depth_name());
-                if (address.getRegion_2depth_name() != null) {
-                    responseAddress.append(" " + address.getRegion_2depth_name()); }
+                if (address.getRegion_2depth_name() != null && address.getRegion_2depth_name() != "") {
+                    responseAddress.append(" " + address.getRegion_2depth_name());
+                    if (address.getRegion_3depth_name() != null && address.getRegion_3depth_name() != "") { responseAddress.append(" " + address.getRegion_3depth_name()); }
+                    if (address.getRoad_name() != null){ responseAddress.append(" " + address.getRoad_name()); }
+                }
             }
             return responseAddress.toString();
         }
-        return "경기도 성남시 분당구";
+        return "경기 성남시 분당구";
     }
 
     // 위치 정보 구하기
@@ -121,5 +125,30 @@ public class PloggingService {
         return newPlogging.getId().toString();
     }
 
+    private TrashDto createTrashCategoryToEntity(TrashCategory trash) {
+        return TrashDto.builder()
+                .paperQuantity(trash.getPaperQuantity())
+                .plaQuantity(trash.getPlaQuantity())
+                .glassQuantity(trash.getGlassQuantity())
+                .canQuantity(trash.getCanQuantity())
+                .foamQuantity(trash.getFoamQuantity())
+                .etcQuantity(trash.getEtcQuantity())
+                .cigarQuantity(trash.getCigarQuantity())
+                .build();
+    }
 
+//    private ResponsePloggingDto createResponseForm(Plogging plogging, TrashCategory trashCategory) {
+//        TrashDto trashDto = createTrashCategoryToEntity(trashCategory);
+//    }
+
+
+
+//    public ResponsePloggingDto getPlogging(String extractedKakaoId, Long id) {
+//        Plogging plogging = ploggingRepository.findById(id).orElseThrow(
+//                ()-> new NullPointerException("Plogging not found for ploggingId: " + id));
+//        TrashCategory trashCategory = trashCategoryRepository.findByPlogging(plogging).orElseThrow(
+//                ()-> new NullPointerException("TrashCategory not found for plogging: " + plogging));
+//        ResponsePloggingDto form = createResponseForm(plogging, trashCategory);
+//
+//    }
 }

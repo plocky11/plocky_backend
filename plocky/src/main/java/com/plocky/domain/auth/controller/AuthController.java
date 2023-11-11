@@ -1,5 +1,6 @@
 package com.plocky.domain.auth.controller;
 
+import com.plocky.domain.auth.dto.TokenDto;
 import com.plocky.domain.auth.service.AuthService;
 import com.plocky.global.jwt.service.JwtService;
 import com.plocky.global.utils.SecurityUtil;
@@ -25,8 +26,8 @@ public class AuthController {
     }
 
     @PostMapping("oauth/kakao/login/access")
-    public void kakaoAccess(@RequestParam(value = "code", required = true) String kakaoCode){
-        authService.access(kakaoCode);
+    public TokenDto kakaoAccess(@RequestParam(value = "code", required = true) String kakaoCode){
+        return authService.access(kakaoCode);
     }
 
     // access token 발급 테스트용 임시 컨트롤러
