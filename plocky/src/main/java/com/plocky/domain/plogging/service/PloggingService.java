@@ -25,6 +25,7 @@ import org.springframework.web.client.RestTemplate;
 
 import org.springframework.http.HttpHeaders;
 
+import java.time.Duration;
 import java.util.List;
 
 @Service
@@ -62,12 +63,20 @@ public class PloggingService {
                 if (address.getRegion_2depth_name() != null && address.getRegion_2depth_name() != "") {
                     responseAddress.append(" " + address.getRegion_2depth_name());
                     if (address.getRegion_3depth_name() != null && address.getRegion_3depth_name() != "") { responseAddress.append(" " + address.getRegion_3depth_name()); }
-                    if (address.getRoad_name() != null){ responseAddress.append(" " + address.getRoad_name()); }
+                    if (address.getRoad_name() != null){
+                        responseAddress.append(" " + address.getRoad_name());
+                        if (address.getMain_building_no() != null && address.getMain_building_no() != "") {
+                            responseAddress.append(" " + address.getMain_building_no());
+                            if (address.getSub_building_no() != null && address.getSub_building_no() != "") {
+                                responseAddress.append("-"+address.getSub_building_no());
+                            }
+                        }
+                    }
                 }
             }
             return responseAddress.toString();
         }
-        return "경기 성남시 분당구";
+        return "경기 성남시 분당구 삼평동 624";
     }
 
     // 위치 정보 구하기
@@ -137,18 +146,28 @@ public class PloggingService {
                 .build();
     }
 
-//    private ResponsePloggingDto createResponseForm(Plogging plogging, TrashCategory trashCategory) {
-//        TrashDto trashDto = createTrashCategoryToEntity(trashCategory);
-//    }
+    private ResponsePloggingDto createResponseForm(Plogging plogging, TrashCategory trashCategory) {
+        Duration duration = Duration.between(plogging.getStartedWhen(), plogging.getEndedWhen());
+        long seconds = duration.getSeconds();
+        int hour = (int)(seconds / 3600);
+        int minute = (int)((seconds % 3600) / 60);
+        int second = (int)(seconds %= 60);
+        TrashDto trashDto = createTrashCategoryToEntity(trashCategory);
+        return ResponsePloggingDto.builder()
+                .ploggingId(plogging.getId())
+                .distance(plogging.getDistance())
+                .totalHour(hour)
+                .totalMinute(minute)
+                .totalSecond(second)
+                .startedWhere(plogging.getStartedLocation().getAddress())
+                .endedWhere(plogging.getEndedLocation().getAddress())
+                .trash(trashDto)
+                .build();
+    }
 
-
-
-//    public ResponsePloggingDto getPlogging(String extractedKakaoId, Long id) {
-//        Plogging plogging = ploggingRepository.findById(id).orElseThrow(
-//                ()-> new NullPointerException("Plogging not found for ploggingId: " + id));
-//        TrashCategory trashCategory = trashCategoryRepository.findByPlogging(plogging).orElseThrow(
-//                ()-> new NullPointerException("TrashCategory not found for plogging: " + plogging));
-//        ResponsePloggingDto form = createResponseForm(plogging, trashCategory);
-//
-//    }
+    public ResponsePloggingDto getPlogging(String extractedKakaoId, Long id) {
+        Plogging plogging = ploggingRepository.findById(id).orElseThrow(
+                ()-> new NullPointerException("Plogging not found for ploggingId: " + id));
+        return createResponseForm(plogging, plogging.getTrashCategory());
+    }
 }
