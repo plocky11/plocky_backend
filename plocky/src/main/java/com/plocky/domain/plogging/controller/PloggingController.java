@@ -1,6 +1,7 @@
 package com.plocky.domain.plogging.controller;
 
 import com.plocky.domain.plogging.dto.CreatePloggingDto;
+import com.plocky.domain.plogging.dto.ResponsePloggingDto;
 import com.plocky.domain.plogging.service.PloggingService;
 import com.plocky.global.jwt.service.JwtService;
 import com.plocky.global.utils.SecurityUtil;
@@ -8,9 +9,7 @@ import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequiredArgsConstructor
@@ -33,4 +32,19 @@ public class PloggingController {
             return null;
         }
     }
+
+//    @GetMapping("members/ploggings/{ploggingId}")
+//    public ResponsePloggingDto getPlogging(HttpServletRequest request, HttpServletResponse response,
+//                                           @RequestParam("ploggingId") Long id) {
+//        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
+//
+//        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
+//            ResponsePloggingDto responsePloggingDto = ploggingService.getPlogging(extractedKakaoId, id);
+//            response.setStatus(200);
+//            return responsePloggingDto;
+//        } else {
+//            response.setStatus(401);
+//            return null;
+//        }
+//    }
 }

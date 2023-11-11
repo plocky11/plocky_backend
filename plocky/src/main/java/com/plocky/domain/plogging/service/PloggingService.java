@@ -3,6 +3,8 @@ package com.plocky.domain.plogging.service;
 import com.plocky.domain.member.entity.Member;
 import com.plocky.domain.member.repository.MemberRepository;
 import com.plocky.domain.plogging.dto.CreatePloggingDto;
+import com.plocky.domain.plogging.dto.ResponsePloggingDto;
+import com.plocky.domain.plogging.dto.TrashDto;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapDocument;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapResponse;
 import com.plocky.domain.plogging.dto.kakaoMap.KakaoMapRoadAddress;
@@ -123,5 +125,30 @@ public class PloggingService {
         return newPlogging.getId().toString();
     }
 
+    private TrashDto createTrashCategoryToEntity(TrashCategory trash) {
+        return TrashDto.builder()
+                .paperQuantity(trash.getPaperQuantity())
+                .plaQuantity(trash.getPlaQuantity())
+                .glassQuantity(trash.getGlassQuantity())
+                .canQuantity(trash.getCanQuantity())
+                .foamQuantity(trash.getFoamQuantity())
+                .etcQuantity(trash.getEtcQuantity())
+                .cigarQuantity(trash.getCigarQuantity())
+                .build();
+    }
 
+//    private ResponsePloggingDto createResponseForm(Plogging plogging, TrashCategory trashCategory) {
+//        TrashDto trashDto = createTrashCategoryToEntity(trashCategory);
+//    }
+
+
+
+//    public ResponsePloggingDto getPlogging(String extractedKakaoId, Long id) {
+//        Plogging plogging = ploggingRepository.findById(id).orElseThrow(
+//                ()-> new NullPointerException("Plogging not found for ploggingId: " + id));
+//        TrashCategory trashCategory = trashCategoryRepository.findByPlogging(plogging).orElseThrow(
+//                ()-> new NullPointerException("TrashCategory not found for plogging: " + plogging));
+//        ResponsePloggingDto form = createResponseForm(plogging, trashCategory);
+//
+//    }
 }
