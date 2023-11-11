@@ -21,6 +21,8 @@ public class JwtService {
         return Optional.ofNullable(request.getHeader("Authorization")).filter(
                 accessToken -> accessToken.startsWith("Bearer ")
         ).map(accessToken -> accessToken.replace("Bearer ", ""));
+
+        // Authorization: Bearer {AccessToken}
     }
 
     public Optional<String> extractKakaoId(String accessToken) {

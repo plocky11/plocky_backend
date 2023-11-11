@@ -24,14 +24,15 @@ import java.io.IOException;
 @RequiredArgsConstructor
 @Slf4j
 public class JwtRequestFilter extends OncePerRequestFilter {
-    private final String NO_CHECK_URL = "/oauth/kakao/login/uri";
+    private final String NO_CHECK_URL = "/auth/refresh";
+    private final String NO_CHECK_URL1 = "/oauth/kakao/login/access";
     private final JwtService jwtService;
     private final MemberRepository memberRepository;
     private GrantedAuthoritiesMapper authoritiesMapper = new NullAuthoritiesMapper();
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain) throws ServletException, IOException {
-        if (request.getRequestURI().equals(NO_CHECK_URL)) {
+        if (request.getRequestURI().equals(NO_CHECK_URL) || request.getRequestURI().equals(NO_CHECK_URL1)) {
             log.info("No check url");
             filterChain.doFilter(request, response);
             return;
