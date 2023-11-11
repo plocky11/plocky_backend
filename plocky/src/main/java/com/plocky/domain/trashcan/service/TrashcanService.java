@@ -29,11 +29,8 @@ public class TrashcanService {
                 .collect(Collectors.toList());
     }
 
-    public TrashcanDto create(String kakaoId, CreateTrashcanDto form) {
-        Member member = memberRepository.findByKakaoId(kakaoId).orElseThrow(
-                () -> new NullPointerException("Member not found for kakaoId: " + kakaoId));
+    public TrashcanDto create(CreateTrashcanDto form) {
         Trashcan trashcan = Trashcan.builder()
-                .member(member)
                 .latitude(form.getLatitude())
                 .longitude(form.getLongitude())
                 .build();
