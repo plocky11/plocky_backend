@@ -33,18 +33,18 @@ public class PloggingController {
         }
     }
 
-//    @GetMapping("members/ploggings/{ploggingId}")
-//    public ResponsePloggingDto getPlogging(HttpServletRequest request, HttpServletResponse response,
-//                                           @RequestParam("ploggingId") Long id) {
-//        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
-//
-//        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
-//            ResponsePloggingDto responsePloggingDto = ploggingService.getPlogging(extractedKakaoId, id);
-//            response.setStatus(200);
-//            return responsePloggingDto;
-//        } else {
-//            response.setStatus(401);
-//            return null;
-//        }
-//    }
+    @GetMapping("members/ploggings/{ploggingId}")
+    public ResponsePloggingDto getPlogging(HttpServletRequest request, HttpServletResponse response,
+                                           @PathVariable("ploggingId") Long ploggingId) {
+        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
+
+        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
+            ResponsePloggingDto responsePloggingDto = ploggingService.getPlogging(extractedKakaoId, ploggingId);
+            response.setStatus(200);
+            return responsePloggingDto;
+        } else {
+            response.setStatus(401);
+            return null;
+        }
+    }
 }
