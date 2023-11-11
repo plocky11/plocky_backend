@@ -22,40 +22,22 @@ public class TrashcanController {
 
     @GetMapping("/trashcan")
     public List<TrashcanDto> getList(HttpServletRequest request, HttpServletResponse response){
-        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
-
-        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
-            List<TrashcanDto> trashcanList = trashcanService.getList();
-            response.setStatus(200);
-            return trashcanList;
-        } else {
-            response.setStatus(401);
-            return null;
-        }
+        List<TrashcanDto> trashcanList = trashcanService.getList();
+        response.setStatus(200);
+        return trashcanList;
     }
 
     @PostMapping("/trashcan")
     public TrashcanDto createTrashcan(HttpServletRequest request, HttpServletResponse response,
                                       @RequestBody CreateTrashcanDto form) {
-        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
-
-        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
-            TrashcanDto trashcanDto = trashcanService.create(extractedKakaoId, form);
-            response.setStatus(201);
-            return trashcanDto;
-        } else {
-            response.setStatus(401);
-            return null;
-        }
+        TrashcanDto trashcanDto = trashcanService.create(form);
+        response.setStatus(201);
+        return trashcanDto;
     }
 
     @DeleteMapping("/trashcan")
     public void deleteTrashcan(@RequestParam(name="trashcanId") Long id, HttpServletRequest request, HttpServletResponse response) {
-        String extractedKakaoId = jwtService.extractKakaoId(jwtService.extractAccessToken(request).orElseThrow()).orElseThrow();
-
-        if (SecurityUtil.getLoginedUserName().equals(extractedKakaoId)) {
-            trashcanService.delete(id);
-            response.setStatus(204);
-        } else { response.setStatus(401); }
+        trashcanService.delete(id);
+        response.setStatus(204);
     }
 }
