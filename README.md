@@ -17,7 +17,7 @@
 ## 🛠️ Tech Stack
 ### DataBase
 <img src="https://img.shields.io/badge/AWS RDS-527FFF?style=for-the-badge&logo=amazonrds&logoColor=white"> <img src="https://img.shields.io/badge/MySQL-4479A1?style=for-the-badge&logo=MySQL&logoColor=white">
-### Web Server
+### WAS
 <img src="https://img.shields.io/badge/AWS EC2-FF9900?style=for-the-badge&logo=amazonec2&logoColor=white"> <img src="https://img.shields.io/badge/Spring boot-6DB33F?style=for-the-badge&logo=SpringBoot&logoColor=white"> <img src="https://img.shields.io/badge/Spring Data JPA-6DB33F?style=for-the-badge&logo=JPA&logoColor=white">
 ## 🏢 Architecture
 ![Slide 4_3 - 1](https://github.com/ppparkta/42seoul/assets/86940801/0e721f09-ce6d-4b32-810b-1458767d8694)
