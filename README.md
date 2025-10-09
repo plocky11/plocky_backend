@@ -9,7 +9,7 @@
 3. 다양한 캐릭터 아이템을 제공하는 상점
 
 ## 🍀 Backend Developer
-|[<img src="https://github.com/ppparkta/42seoul/assets/86940801/8d29106f-74c1-4c5f-b2b7-5d511132eda4" width="200px" href="https://github.com/ppparkta">](https://github.com/ppparkta)|[<img src="https://github.com/ppparkta/42seoul/assets/86940801/dadad7c7-c6d5-49dd-8798-a8a815d20b61" width="200px" href="https://github.com/sungjun4403">](https://github.com/sungjun4403)|[<img src="https://github.com/ppparkta/42seoul/assets/86940801/54c8b8b1-3912-4dc9-a043-b36ada6e45c9" width="200px" href="https://github.com/jjweidon">](https://github.com/jjweidon)|
+|[<img src="https://github.com/ppparkta.png" width="200px" href="https://github.com/ppparkta">](https://github.com/ppparkta)|[<img src="https://github.com/sungjun4403.png" width="200px" href="https://github.com/sungjun4403">](https://github.com/sungjun4403)|[<img src="https://github.com/jjweidon.png" width="200px" href="https://github.com/jjweidon">](https://github.com/jjweidon)|
 |:-:|:-:|:-:|
 |양수빈|이성준|정재웅|
 |카카오 사용자 인증 절차 구현<br>플로깅 데이터 생성 및 조회<br>랭킹 시스템 구현<br>쓰레기통 마커 CRUD API 구현<br>AWS 서버 배포|백엔드 DevOps<br>ERD 설계<br>JWT 설계<br>AWS 서버 배포|API명세서 작성<br>AWS 서버 배포|
